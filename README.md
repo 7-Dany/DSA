@@ -23,16 +23,16 @@ Algorithms, are a set of instructions or rules defined to solve a particular pro
 
 ### Sorting
 Here you will find different types of sorting algorithms
-[Redix Sort](/JavaScript/Sorting/redixSort.js)
-[Counting Sort](/JavaScript/Sorting/countingSort.js)
-[Quick Sort](/JavaScript/Sorting/quickSort.js)
-[Merge Sort](/JavaScript/Sorting/mergeSort.js)
-[Insestion Sort](/JavaScript/Sorting/insertionSort.js)
-[Bubble Sort](/JavaScript/Sorting/bubbleSort.js)
-[Selection Sort](/JavaScript/Sorting/selectionSort.js)
-[Bogo Sort](/JavaScript/Sorting/bogoSort.js)
+- [Redix Sort](/JavaScript/Sorting/redixSort.js)
+- [Counting Sort](/JavaScript/Sorting/countingSort.js)
+- [Quick Sort](/JavaScript/Sorting/quickSort.js)
+- [Merge Sort](/JavaScript/Sorting/mergeSort.js)
+- [Insestion Sort](/JavaScript/Sorting/insertionSort.js)
+- [Bubble Sort](/JavaScript/Sorting/bubbleSort.js)
+- [Selection Sort](/JavaScript/Sorting/selectionSort.js)
+- [Bogo Sort](/JavaScript/Sorting/bogoSort.js)
 
 
 ### Tree
 Here you will different types of Tree related data structure
-[Heap](/JavaScript/Tree/Heap.js)
+- [Heap](/JavaScript/Tree/Heap.js)
