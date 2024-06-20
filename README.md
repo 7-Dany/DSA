@@ -23,7 +23,7 @@ Algorithms, are a set of instructions or rules defined to solve a particular pro
 
 ### Sorting
 Here you will find different types of sorting algorithms
-- [Redix Sort](/JavaScript/Sorting/redixSort.js)
+- [Radix Sort](/JavaScript/Sorting/radixSort.js)
 - [Counting Sort](/JavaScript/Sorting/countingSort.js)
 - [Quick Sort](/JavaScript/Sorting/quickSort.js)
 - [Merge Sort](/JavaScript/Sorting/mergeSort.js)
