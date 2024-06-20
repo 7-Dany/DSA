@@ -23,8 +23,6 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "Sorting Visualizer");
 
     while (! WindowShouldClose()) {
-
-
         ClearBackground(GetColor(0x181818FF));
         BeginDrawing();
         {
