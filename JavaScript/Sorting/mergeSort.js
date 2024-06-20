@@ -14,6 +14,7 @@
  - Time Complexity : O(n log n)
  - Space Complexity: O(n) 
 --------------------------------------------------------*/
+
 function split(array) {
     let right = []
     let left = []
