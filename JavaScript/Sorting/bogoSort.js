@@ -7,8 +7,8 @@
 /_____/\____/\__, /\____/   /____/\____/_/   \__/
             /____/
 
-Time complexity : O(N!)
-Space complexity: O(1)
+- Time complexity : O(n!)
+- Space complexity: O(1)
 ----------------------------------------------------------------------*/
 
 function shuffleArray(array) {

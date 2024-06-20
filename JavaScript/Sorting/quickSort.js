@@ -6,6 +6,9 @@
 / /_/ / /_/ / / /__/ ,<     ___/ / /_/ / /  / /_
 \___\_\__,_/_/\___/_/|_|   /____/\____/_/   \__/
 
+- Time Complexity : O(n log n)
+- Space Complexity: O(log n)
+
 --------------------------------------------------*/
 function partition(array, start, end) {
     let i = start - 1

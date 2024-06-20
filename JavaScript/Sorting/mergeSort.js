@@ -11,8 +11,8 @@
  *  1. Dividing the array into two halves recursively until we get subarrays of size 1.
  *  2. Merging the subarrays back together in a sorted order.
 
- * Time Complexity: O(n log n)
- * Space Complexity: O(n) 
+ - Time Complexity : O(n log n)
+ - Space Complexity: O(n) 
 --------------------------------------------------------*/
 function split(array) {
     let right = []

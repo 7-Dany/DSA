@@ -1,4 +1,4 @@
-/*
+/*---------------------------------------------------------------------
    _____      __          __  _                _____            __
   / ___/___  / /__  _____/ /_(_)___  ____     / ___/____  _____/ /_
   \__ \/ _ \/ / _ \/ ___/ __/ / __ \/ __ \    \__ \/ __ \/ ___/ __/
@@ -10,9 +10,9 @@
  *  1. Selecting the smallest (or largest, depending on sorting order) element from the unsorted part of the array.
  *  2. Swapping it with the leftmost unsorted element.
 
- * Time Complexity: O(n ^ 2)
- * Space Complexity: O(1)
-*/
+ - Time Complexity : O(n^2)
+ - Space Complexity: O(1)
+---------------------------------------------------------------------*/
 
 function selectionSort(array) {
     for (let i = 0; i < array.length; i++) {
