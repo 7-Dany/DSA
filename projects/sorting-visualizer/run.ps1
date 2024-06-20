@@ -1,0 +1,1 @@
+make -B && ./SortingVisualizer.exe
