@@ -7,6 +7,23 @@
 #include <stdint.h>
 #include <synchapi.h>
 
+/*------------------------------------------------------------------------ 
+
+    ____                    _                  ___       _
+   / __/___  _____   _   __(_)______  ______ _/ (_)___  (_)___  ____ _
+  / /_/ __ \/ ___/  | | / / / ___/ / / / __ `/ / /_  / / / __ \/ __ `/
+ / __/ /_/ / /      | |/ / (__  ) /_/ / /_/ / / / / /_/ / / / / /_/ /
+/_/  \____/_/       |___/_/____/\__,_/\__,_/_/_/ /___/_/_/ /_/\__, /
+                                                             /____/
+
+    ____  __  ___________  ____  ________  _____
+   / __ \/ / / / ___/ __ \/ __ \/ ___/ _ \/ ___/
+  / /_/ / /_/ / /  / /_/ / /_/ (__  )  __(__  )
+ / .___/\__,_/_/  / .___/\____/____/\___/____/
+/_/              /_/
+
+------------------------------------------------------------------------*/
+
 void shuffle_array(int *array, int len, uint32_t delay)
 {
     int i, j;
@@ -188,7 +205,12 @@ int get_digit(int number, int index)
 
 void counting(int *array, int *output, int len, int index, uint32_t *delay) 
 {
+    for (int i = 0; i < len; i++) {
+        output[i] = array[i];
+    }
+
     int counts[10] = {0};
+
     for (int i = 0; i < len; i++) {
         int d = get_digit(array[i], index);
         counts[d] += 1;
@@ -199,10 +221,10 @@ void counting(int *array, int *output, int len, int index, uint32_t *delay)
     }
 
     for (int i = len - 1; i >= 0; i--) {
-        int d = get_digit(array[i], index);
+        int d = get_digit(output[i], index);
         int j = counts[d] - 1;
         counts[d] -= 1;
-        output[j] = array[i];
+        array[j] = output[i];
         Sleep(*delay);
     }
 }
@@ -232,16 +254,6 @@ void radix_sort(int *array, int len, uint32_t delay)
 
     for (int i = 0; i < digits; i++) {
         counting(array, output, len, i, &delay);
-        swap(array, output, int*);
-        Sleep(delay);
-    }
-    
-    if (array != input_ptr) {
-        swap(array, output, int*);
-        for (int i = 0; i < len; i++) {
-            array[i] = output[i];
-            Sleep(delay);
-        }
     }
 
     if (minNumber < 0) {

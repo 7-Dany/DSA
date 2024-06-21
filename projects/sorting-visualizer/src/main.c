@@ -75,7 +75,6 @@ int main(void)
         .type = BUBBLE,
     };
 
-
     while (! WindowShouldClose()) {
         pthread_t thread;
 
@@ -83,6 +82,7 @@ int main(void)
             switch (GetKeyPressed()) {
                 case KEY_S:
                     args.type = SHUFFLE;
+                    args.delay = 1;
                     pthread_create(&thread, NULL, sort, (void*)&args);
                     break;
                 case KEY_B:
@@ -92,7 +92,7 @@ int main(void)
                     break;
                 case KEY_R:
                     args.type = RADIX;
-                    args.delay = 10;
+                    args.delay = 30;
                     pthread_create(&thread, NULL, sort, (void*)&args);
                     break;
                 case KEY_M:
