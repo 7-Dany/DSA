@@ -186,7 +186,7 @@ int get_digit(int number, int index)
     return (int)(number / pow(10, index)) % 10;
 }
 
-void counting(int *array, int *output, int len, int index) 
+void counting(int *array, int *output, int len, int index, uint32_t *delay) 
 {
     int counts[10] = {0};
     for (int i = 0; i < len; i++) {
@@ -203,6 +203,7 @@ void counting(int *array, int *output, int len, int index)
         int j = counts[d] - 1;
         counts[d] -= 1;
         output[j] = array[i];
+        Sleep(*delay);
     }
 }
 
@@ -230,7 +231,7 @@ void radix_sort(int *array, int len, uint32_t delay)
     int *output_ptr = output;
 
     for (int i = 0; i < digits; i++) {
-        counting(array, output, len, i);
+        counting(array, output, len, i, &delay);
         swap(array, output, int*);
         Sleep(delay);
     }

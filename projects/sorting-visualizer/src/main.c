@@ -80,6 +80,7 @@ int main(void)
                 break;
             case KEY_R:
                 args.type = RADIX;
+                args.delay = 10;
                 pthread_create(&thread, NULL, sort, (void*)&args);
                 break;
             case KEY_M:
