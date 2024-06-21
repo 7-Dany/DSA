@@ -32,6 +32,12 @@ Here you will find different types of sorting algorithms
 - [Selection Sort](/JavaScript/Sorting/selectionSort.js)
 - [Bogo Sort](/JavaScript/Sorting/bogoSort.js)
 
+### Sorting Visualizer
+
+**To Compile:**
+```
+mingw32-make
+```
 
 ### Tree
 Here you will different types of Tree related data structure
