@@ -221,11 +221,16 @@ void radix_sort(int *array, int len)
     int *output_ptr = output;
 
     for (int i = 0; i < digits; i++) {
-       counting(array, output, len, i);
-       swap(array, output, int*);
+        counting(array, output, len, i);
+        swap(array, output, int*);
     }
     
-    if (array != input_ptr) array = input_ptr;
+    if (array != input_ptr) {
+        swap(array, output, int*);
+        for (int i = 0; i < len; i++) {
+            array[i] = output[i];
+        }
+    }
 
     if (minNumber < 0) {
         for (int i = 0; i < len; i++) {
