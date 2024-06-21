@@ -16,59 +16,49 @@ void create_arr(int *arr)
     }
 }
 
-void print_arr(int *arr)
-{
-    printf("[");
-    for (int i = 0; i < ARR_LEN; i++) {
-        printf("%d", arr[i]);
-        if (i < ARR_LEN - 1) printf(", ");
-    }
-    printf("]\n");
-}
-
 int main(void)
 {
     int arr[ARR_LEN];
 
     create_arr(arr);
     printf("Initial Array:\n");
-    print_arr(arr);
+    print_arr(arr, ARR_LEN, "%d");
 
     printf("Insertion Sort:\n");
     insertion_sort(arr, ARR_LEN); 
-    print_arr(arr);
+    print_arr(arr, ARR_LEN, "%d");
 
     printf("Bubble Sort:\n");
     create_arr(arr);
     bubble_sort(arr, ARR_LEN);
-    print_arr(arr);
+    print_arr(arr, ARR_LEN, "%d");
 
     /* Too slow 
     printf("Bogo Sort:\n");
     create_arr(arr);
     bogo_sort(arr, ARR_LEN);
-    print_arr(arr);
+    print_arr(arr, ARR_LEN, "%d");
     */
 
     printf("Selection Sort:\n");
     create_arr(arr);
     selection_sort(arr, ARR_LEN);
-    print_arr(arr);
+    print_arr(arr, ARR_LEN, "%d");
 
     printf("Merge Sort:\n");
     create_arr(arr);
     merge_sort(arr, ARR_LEN);
-    print_arr(arr);
+    print_arr(arr, ARR_LEN, "%d");
 
     printf("Quick Sort:\n");
     create_arr(arr);
     quick_sort(arr, ARR_LEN);
-    print_arr(arr);
+    print_arr(arr, ARR_LEN, "%d");
 
     printf("Radix Sort:\n");
     create_arr(arr);
     radix_sort(arr, ARR_LEN); 
-    print_arr(arr);
+    print_arr(arr, ARR_LEN, "%d");
 
     return 0;
 }

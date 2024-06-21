@@ -218,17 +218,20 @@ void radix_sort(int *array, int len)
     int *output = (int*)malloc(len * sizeof(int));
 
     int *input_ptr = array;
+    int *output_ptr = output;
 
     for (int i = 0; i < digits; i++) {
        counting(array, output, len, i);
        swap(array, output, int*);
     }
     
-    if (array != input_ptr) swap(array, output, int*);
+    if (array != input_ptr) array = input_ptr;
 
     if (minNumber < 0) {
         for (int i = 0; i < len; i++) {
             array[i] += minNumber;
         }
     }
+
+    free(output_ptr);
 }

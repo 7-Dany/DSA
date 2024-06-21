@@ -8,6 +8,16 @@
     (two) = (temp);          \
   } while (0)
 
+#define print_arr(arr, len, format)       \
+  do {                                    \
+    printf("[");                          \
+    for (int i = 0; i < (len); i++) {     \
+        printf(format, (arr)[i]);           \
+        if (i < (len) - 1) printf(", ");  \
+    }                                     \
+    printf("]\n");                        \
+  } while (0)
+
 void shuffle_array(int *array, int len);
 void insertion_sort(int *array, int len); 
 void bubble_sort(int *array, int len);
