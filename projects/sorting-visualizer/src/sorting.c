@@ -5,8 +5,9 @@
 #include <stdbool.h>
 #include <math.h>
 #include <stdint.h>
+#include <synchapi.h>
 
-void shuffle_array(int *array, int len)
+void shuffle_array(int *array, int len, uint32_t delay)
 {
     int i, j;
     SetRandomSeed(time(0));
@@ -14,10 +15,11 @@ void shuffle_array(int *array, int len)
     for (i = 0; i < len - 1; i++) {
         j = GetRandomValue(i + 1, len - 1);
         swap(array[i], array[j], int);
+        Sleep(delay);
     }
 }
 
-void insertion_sort(int *array, int len) 
+void insertion_sort(int *array, int len, uint32_t delay) 
 {
     for (int i = 1; i < len; i++) {
         int temp = array[i];
@@ -26,13 +28,14 @@ void insertion_sort(int *array, int len)
         while (j >= 0 && array[j] > temp) {
             array[j + 1] = array[j];
             j--;
+            Sleep(delay);
         }
 
         array[j + 1] = temp;
     }
 }
 
-void bubble_sort(int *array, int len) 
+void bubble_sort(int *array, int len, uint32_t delay) 
 {
     for (int i = 0; i < len - 1; i++) {
         for (int j = 0; j < len - i - 1; j++) {
@@ -40,6 +43,7 @@ void bubble_sort(int *array, int len)
                 int temp = array[j];
                 array[j] = array[j + 1];
                 array[j + 1] = temp;
+                Sleep(delay);
             }
         }
     }
@@ -56,14 +60,15 @@ bool is_sorted(int *array, int len)
     return true;
 }
 
-void bogo_sort(int *array, int len) 
+void bogo_sort(int *array, int len, uint32_t delay) 
 {
     while (! is_sorted(array, len)) {
-        shuffle_array(array, len);
+        shuffle_array(array, len, 0);
+        Sleep(delay);
     }
 }
 
-void selection_sort(int *array, int len) 
+void selection_sort(int *array, int len, uint32_t delay) 
 {
     for (int i = 0; i < len; i++) {
         int min = i;
@@ -75,10 +80,11 @@ void selection_sort(int *array, int len)
         }
 
         swap(array[min], array[i], int);
+        Sleep(delay);
     }
 }
 
-void merge(int *array, int l1, int r1, int l2, int r2)
+void merge(int *array, int l1, int r1, int l2, int r2, uint32_t *delay)
 {
     int i = l1;
     int j = l2;
@@ -116,12 +122,13 @@ void merge(int *array, int l1, int r1, int l2, int r2)
     for (int x = l1; x < r2 + 1; x++) {
         array[x] = results[k];
         k++;
+        Sleep(*delay);
     }
 
     free(results);
 }
 
-void MERGE_SORT(int *array, int l, int r)
+void MERGE_SORT(int *array, int l, int r, uint32_t *delay)
 {
     if (r - l == 0) return;
 
@@ -131,18 +138,18 @@ void MERGE_SORT(int *array, int l, int r)
     int left2 = mid + 1;
     int right2 = r;
 
-    MERGE_SORT(array, left1, right1);
-    MERGE_SORT(array, left2, right2);
+    MERGE_SORT(array, left1, right1, delay);
+    MERGE_SORT(array, left2, right2, delay);
 
-    merge(array, left1, right1, left2, right2);
+    merge(array, left1, right1, left2, right2, delay);
 }
 
-void merge_sort(int *array, int len) 
+void merge_sort(int *array, int len, uint32_t delay) 
 {
-    MERGE_SORT(array, 0, len - 1);
+    MERGE_SORT(array, 0, len - 1, &delay);
 }
 
-int partition(int *array, int start, int end) 
+int partition(int *array, int start, int end, uint32_t *delay) 
 {
     int i = start - 1;
 
@@ -150,26 +157,28 @@ int partition(int *array, int start, int end)
         if (array[j] < array[end]) {
             i++;
             swap(array[i], array[j], int);
+            Sleep(*delay);
         }
     }
 
     i++;
     swap(array[i], array[end], int);
+    Sleep(*delay);
 
     return i;
 }
 
-void QUICK_SORT(int *array, int start, int end)
+void QUICK_SORT(int *array, int start, int end, uint32_t *delay)
 {
     if (start > end) return;
-    int pivot = partition(array, start, end);
-    QUICK_SORT(array, start, pivot - 1);
-    QUICK_SORT(array, pivot + 1, end);
+    int pivot = partition(array, start, end, delay);
+    QUICK_SORT(array, start, pivot - 1, delay);
+    QUICK_SORT(array, pivot + 1, end, delay);
 }
 
-void quick_sort(int *array, int len) 
+void quick_sort(int *array, int len, uint32_t delay) 
 {
-    QUICK_SORT(array, 0, len - 1);
+    QUICK_SORT(array, 0, len - 1, &delay);
 }
 
 int get_digit(int number, int index) 
@@ -197,7 +206,7 @@ void counting(int *array, int *output, int len, int index)
     }
 }
 
-void radix_sort(int *array, int len) 
+void radix_sort(int *array, int len, uint32_t delay) 
 {
     int maxNumber = INT32_MIN;
     int minNumber = INT32_MAX;
@@ -223,12 +232,14 @@ void radix_sort(int *array, int len)
     for (int i = 0; i < digits; i++) {
         counting(array, output, len, i);
         swap(array, output, int*);
+        Sleep(delay);
     }
     
     if (array != input_ptr) {
         swap(array, output, int*);
         for (int i = 0; i < len; i++) {
             array[i] = output[i];
+            Sleep(delay);
         }
     }
 

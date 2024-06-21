@@ -25,39 +25,39 @@ int main(void)
     print_arr(arr, ARR_LEN, "%d");
 
     printf("Insertion Sort:\n");
-    insertion_sort(arr, ARR_LEN); 
+    insertion_sort(arr, ARR_LEN, 0); 
     print_arr(arr, ARR_LEN, "%d");
 
     printf("Bubble Sort:\n");
     create_arr(arr);
-    bubble_sort(arr, ARR_LEN);
+    bubble_sort(arr, ARR_LEN, 0);
     print_arr(arr, ARR_LEN, "%d");
 
     /* Too slow 
     printf("Bogo Sort:\n");
     create_arr(arr);
-    bogo_sort(arr, ARR_LEN);
+    bogo_sort(arr, ARR_LEN, 0);
     print_arr(arr, ARR_LEN, "%d");
     */
 
     printf("Selection Sort:\n");
     create_arr(arr);
-    selection_sort(arr, ARR_LEN);
+    selection_sort(arr, ARR_LEN, 0);
     print_arr(arr, ARR_LEN, "%d");
 
     printf("Merge Sort:\n");
     create_arr(arr);
-    merge_sort(arr, ARR_LEN);
+    merge_sort(arr, ARR_LEN, 0);
     print_arr(arr, ARR_LEN, "%d");
 
     printf("Quick Sort:\n");
     create_arr(arr);
-    quick_sort(arr, ARR_LEN);
+    quick_sort(arr, ARR_LEN, 0);
     print_arr(arr, ARR_LEN, "%d");
 
     printf("Radix Sort:\n");
     create_arr(arr);
-    radix_sort(arr, ARR_LEN); 
+    radix_sort(arr, ARR_LEN, 0); 
     print_arr(arr, ARR_LEN, "%d");
 
     return 0;
