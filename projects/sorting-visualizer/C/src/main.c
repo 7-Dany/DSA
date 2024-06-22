@@ -52,6 +52,13 @@ void* sort(void *sort_args)
     return NULL;
 }
 
+#define create_thread(args)                               \
+  do {                                                    \
+    pthread_t thread;                                     \
+    pthread_create(&thread, NULL, sort, (void*)&(args));  \
+    pthread_detach(thread);                               \
+  } while (0)
+
 int main(void)
 {
     const int screenWidth = 1600;
@@ -83,21 +90,33 @@ int main(void)
                 case KEY_S:
                     args.type = SHUFFLE;
                     args.delay = 1;
-                    pthread_create(&thread, NULL, sort, (void*)&args);
+                    create_thread(args);
                     break;
                 case KEY_B:
                     args.delay = 1;
                     args.type = BUBBLE;
-                    pthread_create(&thread, NULL, sort, (void*)&args);
+                    create_thread(args);
                     break;
                 case KEY_R:
                     args.type = RADIX;
                     args.delay = 30;
-                    pthread_create(&thread, NULL, sort, (void*)&args);
+                    create_thread(args);
                     break;
                 case KEY_M:
                     args.type = MERGE;
-                    pthread_create(&thread, NULL, sort, (void*)&args);
+                    create_thread(args);
+                    break;
+                case KEY_I:
+                    args.type = INSERTION;
+                    create_thread(args);
+                    break;
+                case KEY_C:
+                    args.type = SELECTION;
+                    create_thread(args);
+                    break;
+                case KEY_Q:
+                    args.type = QUICK;
+                    create_thread(args);
                     break;
             }
         }
@@ -107,7 +126,8 @@ int main(void)
         BeginDrawing();
         {
             for (int i = 0; i < array_size; i++) {
-                Color color = ColorFromHSV(array[i], 1, 1);
+                float hue = (array[i] / (array_size * 10.f)) * 360;
+                Color color = ColorFromHSV(hue, 1, 1);
                 float height = array[i] * factor;
                 Vector2 pos = {.x = i * bar_width, .y = screenHeight - height};
                 Vector2 size = {.x = bar_width, .y = height};
