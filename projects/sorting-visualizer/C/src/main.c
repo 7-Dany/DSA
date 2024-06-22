@@ -99,11 +99,6 @@ int main(void)
                     args.type = MERGE;
                     pthread_create(&thread, NULL, sort, (void*)&args);
                     break;
-                // case KEY_G:
-                //     args.delay = 1;
-                //     args.type = BOGO;
-                //     pthread_create(&thread, NULL, sort, (void*)&args);
-                //     break;
             }
         }
 
