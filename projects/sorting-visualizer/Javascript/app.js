@@ -134,7 +134,7 @@ async function counting(array, index) {
     }
 
     return array
-}   
+}
 
 async function radixSort(array) {
     // Get the number with maxdigits
