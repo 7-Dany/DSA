@@ -49,6 +49,7 @@ void insertion_sort(int *array, int len, uint32_t delay)
         }
 
         array[j + 1] = temp;
+        Sleep(delay);
     }
 }
 
@@ -249,9 +250,6 @@ void radix_sort(int *array, int len, uint32_t delay)
 
     int *output = (int*)malloc(len * sizeof(int));
 
-    int *input_ptr = array;
-    int *output_ptr = output;
-
     for (int i = 1; i < digits; i++) {
         counting(array, output, len, i, &delay);
     }
@@ -262,5 +260,5 @@ void radix_sort(int *array, int len, uint32_t delay)
         }
     }
 
-    free(output_ptr);
+    free(output);
 }

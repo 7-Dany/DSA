@@ -44,7 +44,7 @@ void* sort(void *sort_args)
         case RADIX: radix_sort(array, len, delay); break;
         case SHUFFLE: shuffle_array(array, len, delay); break;
         // case BOGO: bogo_sort(array, len, delay);
-        default: break;// No way I'm allowing bogo sort.
+        default: break;
     }
 
     thread_running = false;
@@ -65,9 +65,10 @@ int main(void)
     const int screenHeight = 900;
 
     const int array_size = 100;
-    int *array = (int*)malloc(array_size * sizeof(int));
     const int bar_width = screenWidth / array_size;
-    float factor = (screenHeight - 50.f) / (array_size * 10);
+    const float factor = (screenHeight - 50.f) / (array_size * 10);
+
+    int *array = (int*)malloc(array_size * sizeof(int));
 
     for (int i = 0; i < array_size; i++) {
         array[i] = (i + 1) * 10;
@@ -83,8 +84,6 @@ int main(void)
     };
 
     while (! WindowShouldClose()) {
-        pthread_t thread;
-
         if (! thread_running) {
             switch (GetKeyPressed()) {
                 case KEY_S:
@@ -98,23 +97,27 @@ int main(void)
                     create_thread(args);
                     break;
                 case KEY_R:
-                    args.type = RADIX;
                     args.delay = 30;
+                    args.type = RADIX;
                     create_thread(args);
                     break;
                 case KEY_M:
+                    args.delay = 30;
                     args.type = MERGE;
                     create_thread(args);
                     break;
                 case KEY_I:
+                    args.delay = 10;
                     args.type = INSERTION;
                     create_thread(args);
                     break;
                 case KEY_C:
+                    args.delay = 30;
                     args.type = SELECTION;
                     create_thread(args);
                     break;
                 case KEY_Q:
+                    args.delay = 30;
                     args.type = QUICK;
                     create_thread(args);
                     break;
