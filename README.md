@@ -34,7 +34,7 @@ Here you will find different types of sorting algorithms
 
 ### Sorting Visualizer
 
-**To Compile:**
+**To Compile the C version:**
 ```
 mingw32-make
 ```
