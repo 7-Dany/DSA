@@ -1,7 +1,9 @@
 #include "raylib.h"
+#include "raymath.h"
 #include "sorting.h"
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
 
@@ -88,6 +90,8 @@ void* sort(void *sort_args)
     pthread_create(&thread, NULL, sort, (void*)&(args));  \
     pthread_detach(thread);                               \
   } while (0)
+
+#define in_range(i, l, h) ((i) >= (l) && (i) <= (h) ? true : false)
 
 int main(void)
 {
@@ -194,10 +198,10 @@ int main(void)
                 Vector2 startpos;
                 Vector2 prevstart;
                 Vector2 prevend;
-                int j = 0;
+                const int inc_angle = 360.f / SORT_COUNT;
                 for (int i = 0; i <= SORT_COUNT; i++) {
-                    float angle = (i * (360.f / SORT_COUNT)) * PI / 180.f; 
-                    float prev_angle =  ((i - 1) * (360.f / SORT_COUNT)) * PI / 180.f;
+                    float angle = (i * inc_angle) * PI / 180.f; 
+                    float prev_angle =  ((i - 1) * inc_angle) * PI / 180.f;
                     prevstart.x = (cosf(prev_angle) * 150) + center.x;
                     prevstart.y = (sinf(prev_angle) * 150) + center.y;
                     prevend.x = (cosf(prev_angle) * 100) + prevstart.x;
@@ -214,10 +218,26 @@ int main(void)
                         points[i-1][3] = endpos;
                     }
                 }
-                if (CheckCollisionPointPoly(GetMousePosition(), points[0], 4)) {
-                    DrawCircleV(GetMousePosition(), 10, RED);
-                }
 
+                Vector2 mousepos = GetMousePosition();
+                float angle = Vector2LineAngle(center, mousepos) * RAD2DEG;
+                if (angle < 0) angle += 360.f;
+                float distance = Vector2Distance(center, mousepos);
+                int sector = -1;
+                
+                if (in_range(distance, 150, 250)) {
+                    for (int i = 0; i < SORT_COUNT; i++) {
+                        if (in_range(angle, (inc_angle * i) + 1, (inc_angle * (i + 1)) - 1)) {
+                            sector = i;
+                            break;
+                        }
+                    }
+                }
+            
+                char temp[25];
+                sprintf(temp, "%d", sector);
+                // sprintf(temp, "%f", angle);
+                DrawText(temp, mousepos.x, mousepos.y - 20, 20, RED);
             }
         }
         EndDrawing();
