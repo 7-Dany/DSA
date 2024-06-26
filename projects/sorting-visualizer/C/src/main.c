@@ -170,6 +170,7 @@ int main(void)
     int sector = -1;
 
     bool show_wheel = false;
+    bool ignore_tab = false;
 
     int *array = (int*)malloc(array_size * sizeof(int));
 
@@ -197,16 +198,22 @@ int main(void)
             }
         }
 
-        if (IsKeyDown(KEY_TAB)) 
+        if (IsKeyDown(KEY_TAB) && ! ignore_tab) 
             show_wheel = true;
         else 
             show_wheel = false;
+
+        if (IsKeyUp(KEY_TAB)) {
+            ignore_tab = false;
+        }
 
         if (show_wheel) {
             sector = get_sector();
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && sector != -1) {
                 current_alg = sector;
+                show_wheel = false;
+                ignore_tab = true;
             }
         }
 
