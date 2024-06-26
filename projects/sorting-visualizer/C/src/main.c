@@ -26,6 +26,7 @@ typedef struct {
     uint32_t delay;
 } Sort_Args;
 
+
 typedef struct {
     Vector2 min;
     Vector2 max;
@@ -53,6 +54,22 @@ void button_update(Button *btn)
             }
         }
     }
+}
+
+const char* get_sort_name(Sorting_Algs alg)
+{
+    switch (alg) {
+        case INSERTION: return "insertion";
+        case BUBBLE: return "bubble";
+        case BOGO: return "bogo";
+        case SELECTION: return "selection";
+        case MERGE: return "merge";
+        case QUICK: return "quick";
+        case RADIX: return "radix";
+        case SHUFFLE: return "shuffle";
+        case SORT_COUNT: return "sort_count";
+        default: return NULL;
+   }
 }
 
 bool thread_running = false;
@@ -193,30 +210,30 @@ int main(void)
                 Vector2 center = {.x = screenWidth / 2.f, .y = screenHeight / 2.f};
                 DrawCircleLinesV(center, 250, WHITE);
                 DrawCircleLinesV(center, 150, WHITE);
-                Vector2 points[8][4];
                 Vector2 endpos; 
                 Vector2 startpos;
-                Vector2 prevstart;
-                Vector2 prevend;
-                const int inc_angle = 360.f / SORT_COUNT;
-                for (int i = 0; i <= SORT_COUNT; i++) {
-                    float angle = (i * inc_angle) * PI / 180.f; 
-                    float prev_angle =  ((i - 1) * inc_angle) * PI / 180.f;
-                    prevstart.x = (cosf(prev_angle) * 150) + center.x;
-                    prevstart.y = (sinf(prev_angle) * 150) + center.y;
-                    prevend.x = (cosf(prev_angle) * 100) + prevstart.x;
-                    prevend.y = (sinf(prev_angle) * 100) + prevstart.y;
+                const float inc_angle = 360.f / SORT_COUNT;
+                for (int i = 0; i < SORT_COUNT; i++) {
+                    float angle = (i * inc_angle) * DEG2RAD; 
                     startpos.x = (cosf(angle) * 150) + center.x;
                     startpos.y = (sinf(angle) * 150) + center.y;
                     endpos.x = (cosf(angle) * 100) + startpos.x;
                     endpos.y = (sinf(angle) * 100) + startpos.y;
                     DrawLineEx(startpos, endpos, 2.f, WHITE);
-                    if (i > 0) {
-                        points[i-1][0] = prevstart;
-                        points[i-1][1] = prevend;
-                        points[i-1][2] = startpos;
-                        points[i-1][3] = endpos;
-                    }
+                }
+                float start_angle = inc_angle / -2.f;
+                for (int i = 0; i < SORT_COUNT; i++) {
+                    // float angle = ((i * inc_angle) + (inc_angle / 2.f)) * DEG2RAD; 
+                    float angle = (start_angle - (i * inc_angle)) * DEG2RAD;
+                    startpos.x = (cosf(angle) * 200) + center.x;
+                    startpos.y = (sinf(angle) * 200) + center.y;
+                    Font font = GetFontDefault();
+                    float space = 2.f;
+                    float font_size = 20;
+                    const char *text = get_sort_name(i);
+                    Vector2 size = MeasureTextEx(font, text, font_size, space);
+                    DrawTextPro(font, text, startpos, (Vector2){.x = size.x / 2.f, .y = size.y / 2.f}, 
+                                0.f, font_size, space, WHITE);
                 }
 
                 Vector2 mousepos = GetMousePosition();
@@ -234,10 +251,10 @@ int main(void)
                     }
                 }
             
-                char temp[25];
-                sprintf(temp, "%d", sector);
+                // char temp[25];
+                // sprintf(temp, "%d", sector);
                 // sprintf(temp, "%f", angle);
-                DrawText(temp, mousepos.x, mousepos.y - 20, 20, RED);
+                // DrawText(temp, mousepos.x, mousepos.y - 20, 20, RED);
             }
         }
         EndDrawing();
