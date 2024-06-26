@@ -60,13 +60,13 @@ const char* get_sort_name(Sorting_Algs alg)
 {
     switch (alg) {
         case INSERTION: return "insertion";
-        case BUBBLE: return "bubble";
-        case BOGO: return "bogo";
+        case BUBBLE   : return "bubble";
+        case BOGO     : return "bogo";
         case SELECTION: return "selection";
-        case MERGE: return "merge";
-        case QUICK: return "quick";
-        case RADIX: return "radix";
-        case SHUFFLE: return "shuffle";
+        case MERGE    : return "merge";
+        case QUICK    : return "quick";
+        case RADIX    : return "radix";
+        case SHUFFLE  : return "shuffle";
         case SORT_COUNT: return "sort_count";
         default: return NULL;
    }
@@ -86,12 +86,12 @@ void* sort(void *sort_args)
 
     switch (type) {
         case INSERTION: insertion_sort(array, len, delay); break;
-        case BUBBLE: bubble_sort(array, len, delay); break;
+        case BUBBLE   : bubble_sort(array, len, delay); break;
         case SELECTION: selection_sort(array, len, delay); break;
-        case MERGE: merge_sort(array, len, delay); break;
-        case QUICK: quick_sort(array, len, delay); break;
-        case RADIX: radix_sort(array, len, delay); break;
-        case SHUFFLE: shuffle_array(array, len, delay); break;
+        case MERGE    : merge_sort(array, len, delay); break;
+        case QUICK    : quick_sort(array, len, delay); break;
+        case RADIX    : radix_sort(array, len, delay); break;
+        case SHUFFLE  : shuffle_array(array, len, delay); break;
         // case BOGO: bogo_sort(array, len, delay);
         default: break;
     }
@@ -110,11 +110,50 @@ void* sort(void *sort_args)
 
 #define in_range(i, l, h) ((i) >= (l) && (i) <= (h) ? true : false)
 
+Sorting_Algs current_alg = SHUFFLE;
+
+uint32_t get_delay(Sorting_Algs alg)
+{
+    switch (alg) {
+        case INSERTION: return 10;
+        case BUBBLE   : return 1;
+        case BOGO     : return 0;
+        case SELECTION: return 30;
+        case MERGE    : return 30;
+        case QUICK    : return 30;
+        case RADIX    : return 30;
+        case SHUFFLE  : return 1;
+        default: return 0;
+    }
+}
+
+#define screenWidth 1600
+#define screenHeight 900
+
+int get_sector()
+{
+    const float inc_angle = 360.f / SORT_COUNT;
+    const Vector2 center = {.x = screenWidth / 2.f, .y = screenHeight / 2.f};
+    Vector2 mousepos = GetMousePosition();
+    float angle = Vector2LineAngle(center, mousepos) * RAD2DEG;
+    if (angle < 0) angle += 360.f;
+    float distance = Vector2Distance(center, mousepos);
+    int sector = -1;
+    
+    if (in_range(distance, 150, 250)) {
+        for (int i = 0; i < SORT_COUNT; i++) {
+            if (in_range(angle, (inc_angle * i) + 1, (inc_angle * (i + 1)) - 1)) {
+                sector = i;
+                break;
+            }
+        }
+    }
+
+    return sector;
+}
+
 int main(void)
 {
-    const int screenWidth = 1600;
-    const int screenHeight = 900;
-
     const int array_size = 100;
     const Vector2 frame_start = {
         .x = 0,
@@ -128,6 +167,7 @@ int main(void)
     const int frame_height = frame_end.y - frame_start.y;
     const int bar_width = frame_width / array_size;
     const float factor = (frame_height - 50.f) / (array_size * 10);
+    int sector = -1;
 
     bool show_wheel = false;
 
@@ -149,39 +189,9 @@ int main(void)
     while (! WindowShouldClose()) {
         if (! thread_running) {
             switch (GetKeyPressed()) {
-                case KEY_S:
-                    args.type = SHUFFLE;
-                    args.delay = 1;
-                    create_thread(args);
-                    break;
-                case KEY_B:
-                    args.delay = 1;
-                    args.type = BUBBLE;
-                    create_thread(args);
-                    break;
-                case KEY_R:
-                    args.delay = 30;
-                    args.type = RADIX;
-                    create_thread(args);
-                    break;
-                case KEY_M:
-                    args.delay = 30;
-                    args.type = MERGE;
-                    create_thread(args);
-                    break;
-                case KEY_I:
-                    args.delay = 10;
-                    args.type = INSERTION;
-                    create_thread(args);
-                    break;
-                case KEY_C:
-                    args.delay = 30;
-                    args.type = SELECTION;
-                    create_thread(args);
-                    break;
-                case KEY_Q:
-                    args.delay = 30;
-                    args.type = QUICK;
+                case KEY_SPACE:
+                    args.type = current_alg;
+                    args.delay = get_delay(current_alg);
                     create_thread(args);
                     break;
             }
@@ -191,6 +201,14 @@ int main(void)
             show_wheel = true;
         else 
             show_wheel = false;
+
+        if (show_wheel) {
+            sector = get_sector();
+
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && sector != -1) {
+                current_alg = sector;
+            }
+        }
 
         ClearBackground(GetColor(0x181818FF));
 
@@ -204,6 +222,9 @@ int main(void)
                 Vector2 size = {.x = bar_width, .y = height};
                 DrawRectangleV(pos, size, color);
             } 
+
+            DrawText("algorithm:", frame_width + 5, 30, 20, WHITE);
+            DrawText(get_sort_name(current_alg), frame_width + 5, 60, 20, YELLOW);
 
             if (show_wheel) {
                 DrawRectangle(0, 0, screenWidth, screenHeight, ColorAlpha(BLACK, 0.4f));
@@ -221,34 +242,21 @@ int main(void)
                     endpos.y = (sinf(angle) * 100) + startpos.y;
                     DrawLineEx(startpos, endpos, 2.f, WHITE);
                 }
+
+
                 float start_angle = inc_angle / -2.f;
                 for (int i = 0; i < SORT_COUNT; i++) {
-                    // float angle = ((i * inc_angle) + (inc_angle / 2.f)) * DEG2RAD; 
                     float angle = (start_angle - (i * inc_angle)) * DEG2RAD;
                     startpos.x = (cosf(angle) * 200) + center.x;
                     startpos.y = (sinf(angle) * 200) + center.y;
                     Font font = GetFontDefault();
                     float space = 2.f;
                     float font_size = 20;
+                    Color color = sector == i ? GREEN : WHITE;
                     const char *text = get_sort_name(i);
                     Vector2 size = MeasureTextEx(font, text, font_size, space);
                     DrawTextPro(font, text, startpos, (Vector2){.x = size.x / 2.f, .y = size.y / 2.f}, 
-                                0.f, font_size, space, WHITE);
-                }
-
-                Vector2 mousepos = GetMousePosition();
-                float angle = Vector2LineAngle(center, mousepos) * RAD2DEG;
-                if (angle < 0) angle += 360.f;
-                float distance = Vector2Distance(center, mousepos);
-                int sector = -1;
-                
-                if (in_range(distance, 150, 250)) {
-                    for (int i = 0; i < SORT_COUNT; i++) {
-                        if (in_range(angle, (inc_angle * i) + 1, (inc_angle * (i + 1)) - 1)) {
-                            sector = i;
-                            break;
-                        }
-                    }
+                                0.f, font_size, space, color);
                 }
             
                 // char temp[25];
