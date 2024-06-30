@@ -7,14 +7,16 @@ class Sort {
         this.chart = chart
     }
 
-    get events() {
-        return {
-            "s": this.shuffleArray,
-            "r": this.radixSort,
-            "i": this.insertionSort,
-            "b": this.bubbleSort,
-            "w": this.selectionSort,
-            "q": this.quickSort,
+    getSort = (key) => {
+        switch (key) {
+            case "s": return this.shuffleArray;
+            case "r": return this.radixSort;
+            case "i": return this.insertionSort;
+            case "b": return this.bubbleSort;
+            case "w": return this.selectionSort;
+            case "q": return this.quickSort;
+            // case "m": this.mergeSort;
+            default : null;
         }
     }
 
@@ -23,6 +25,7 @@ class Sort {
      * @param {int[]} array array of numbers. 
      * @returns {int[]} shuffled array.
     */
+
     shuffleArray = async (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));

@@ -14,10 +14,12 @@ let locked = false
 const onKeyDown = async (event) => {
     if (locked) return
     let key = event.key
-    let sortingFunc = events[key]
-    locked = true
-    await sortingFunc(test)
-    locked = false
+    let sortingFunc = sort.getSort(key);
+    if (sortingFunc != null) {
+        locked = true
+        await sortingFunc(test)
+        locked = false
+    }
 }
 
 document.addEventListener('keydown', onKeyDown)
