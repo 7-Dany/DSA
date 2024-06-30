@@ -1,6 +1,6 @@
 class Canvas {
     /**
-     * 
+     * Canvas to show the sorting visualization
      * @param {string} canvasId specificed canvas id to show sorting visualization.
      * @param {int[]} array specificed array to visualize its sorting process.
      */

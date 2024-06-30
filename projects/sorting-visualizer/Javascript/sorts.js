@@ -1,4 +1,5 @@
 class Sort {
+    #_locked;
     /**
      * Contains all sorting algorithms
      * @param {Function} chart function to create chart for the array that being sorted.
@@ -16,6 +17,7 @@ class Sort {
             case "w": return this.selectionSort;
             case "q": return this.quickSort;
             case "m": return this.mergeSort;
+            case " ": return this.reset;
             default: return null;
         }
     }
@@ -34,7 +36,7 @@ class Sort {
             await this.chart(array)
         }
 
-        return array;
+        await this.chart(array)
     }
 
     getDigit = (number, index) => {
@@ -101,7 +103,6 @@ class Sort {
         }
 
         await this.chart(array)
-        return array
     }
 
     partition = async (array, start, end) => {
@@ -132,13 +133,13 @@ class Sort {
      * @param {int[]} array array to be sorted
      * @param {int} start start of the array (default = 0)
      * @param {int} end end of the array (default = array.length - 1)
-     * @returns {int[]} sorted array
+     * @returns {Promise<void>} sorted array
      */
     quickSort = async (array, start = 0, end = array.length - 1) => {
         if (start > end) return
         let pivot = await this.partition(array, start, end);
-        this.quickSort(array, start, pivot - 1)
-        this.quickSort(array, pivot + 1, end)
+        await this.quickSort(array, start, pivot - 1)
+        await this.quickSort(array, pivot + 1, end)
     }
 
     merge = async (array, l1, r1, l2, r2) => {
@@ -266,12 +267,20 @@ class Sort {
     }
 
     reset = async (array) => {
-        array = []
         for (let i = 1; i <= 50; i++) {
-            array.push(i * 10)
+            array[i - 1] = i * 10
+            await this.chart(array)
         }
+    }
 
-        await this.chart(array)
+    startSorting = async (key, array) => {
+        if (this._locked) return
+        let sortFunc = this.getSort(key)
+        if (!sortFunc) return
+
+        this._locked = true
+        await sortFunc(array);
+        this._locked = false
     }
 }
 

@@ -258,7 +258,7 @@ int main(void)
                     startpos.y = (sinf(angle) * 200) + center.y;
                     Font font = GetFontDefault();
                     float space = 2.f;
-                    float font_size = 20;
+                    float font_size = sector == i ? 25 : 20;
                     Color color = sector == i ? GREEN : WHITE;
                     const char *text = get_sort_name(i);
                     Vector2 size = MeasureTextEx(font, text, font_size, space);
