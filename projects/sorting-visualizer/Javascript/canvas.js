@@ -98,7 +98,7 @@ class Canvas {
      * Create canvas with rectangles of different shapes and colors to visualize sorting.
      * @param {int[]} array specified array to visualize on canvas.
     */
-    createChart = async (array) => {
+    createChart = async (array, delay = 20) => {
         // Delete the previous canvas
         let canvasWidth = this.canvas.width
         let canvasHeight = this.canvas.height
@@ -116,7 +116,7 @@ class Canvas {
         }
 
         // Sleep few milliseconds to see the content.
-        await this.sleep(20);
+        await this.sleep(delay);
     }
 }
 

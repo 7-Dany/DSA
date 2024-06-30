@@ -15,8 +15,8 @@ class Sort {
             case "b": return this.bubbleSort;
             case "w": return this.selectionSort;
             case "q": return this.quickSort;
-            // case "m": this.mergeSort;
-            default : null;
+            case "m": return this.mergeSort;
+            default : return null;
         }
     }
 
@@ -158,49 +158,58 @@ class Sort {
         return [left, right]
     }
 
-    merge = async (left, right) => {
-        let i = 0;
-        let j = 0;
-        let results = []
+    merge = async (array, l1, r1, l2, r2) => {
+        let i = l1
+        let j = l2
+        let results = [] 
 
-        while (i < left.length && j < right.length) {
-            if (left[i] < right[j]) {
-                results.push(left[i])
+        while (i < r1 + 1 && j < r2 + 1) {
+            if (array[i] < array[j]) {
+                results.push(array[i])
                 i++
-            } else {
-                results.push(right[j])
+            }  
+            else {
+                results.push(array[j])
                 j++
             }
         }
 
-        while (i < left.length) {
-            results.push(left[i])
+        while (i < r1 + 1) {
+            results.push(array[i])
             i++
         }
 
-        while (j < right.length) {
-            results.push(right[j])
+        while (j < r2 + 1) {
+            results.push(array[j])
             j++
         }
 
-        await this.chart(results)
-        return results
+        let k = 0
+
+        for (let x = l1; x < r2 + 1; x++) {
+            array[x] = results[k]
+            k++
+            await this.chart(array, 1)
+        }
     }
 
     /**
      * Merge sort algorithm
      * @param {int[]} array array to be sorted
-     * @returns {int[]}
     */
-    mergeSort = async (array) => {
-        if (array.length === 1) return array
+    mergeSort = async (array, l = 0, r = array.length - 1) => {
+        if (r - l == 0) return
 
-        let [left, right] = this.split(array)
+        let mid = Math.floor((l + r) / 2)
+        let left1 = l
+        let right1 = mid
+        let left2 = mid + 1
+        let right2 = r
 
-        left = this.mergeSort(left)
-        right = this.mergeSort(right)
+        await mergeSort(array, left1, right1)
+        await mergeSort(array, left2, right2)
 
-        return await this.merge(left, right)
+        await merge(array, left1, right1, left2, right2)
     }
 
     /**
