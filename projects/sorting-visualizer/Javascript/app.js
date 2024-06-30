@@ -8,7 +8,6 @@ for (let i = 1; i <= 50; i++) {
 
 const canvas = new Canvas('test', test)
 const sort = new Sort(canvas.createChart)
-const events = sort.events
 
 let locked = false
 const onKeyDown = async (event) => {
