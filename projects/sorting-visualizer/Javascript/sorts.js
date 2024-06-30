@@ -16,7 +16,7 @@ class Sort {
             case "w": return this.selectionSort;
             case "q": return this.quickSort;
             case "m": return this.mergeSort;
-            default : return null;
+            default: return null;
         }
     }
 
@@ -25,7 +25,6 @@ class Sort {
      * @param {int[]} array array of numbers. 
      * @returns {int[]} shuffled array.
     */
-
     shuffleArray = async (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
@@ -142,32 +141,16 @@ class Sort {
         this.quickSort(array, pivot + 1, end)
     }
 
-    split = (array) => {
-        let right = []
-        let left = []
-        let middle = Math.floor(array.length / 2)
-
-        for (let i = 0; i < array.length; i++) {
-            if (i < middle) {
-                left.push(array[i])
-            } else {
-                right.push(array[i])
-            }
-        }
-
-        return [left, right]
-    }
-
     merge = async (array, l1, r1, l2, r2) => {
         let i = l1
         let j = l2
-        let results = [] 
+        let results = []
 
         while (i < r1 + 1 && j < r2 + 1) {
             if (array[i] < array[j]) {
                 results.push(array[i])
                 i++
-            }  
+            }
             else {
                 results.push(array[j])
                 j++
@@ -206,10 +189,10 @@ class Sort {
         let left2 = mid + 1
         let right2 = r
 
-        await mergeSort(array, left1, right1)
-        await mergeSort(array, left2, right2)
+        await this.mergeSort(array, left1, right1)
+        await this.mergeSort(array, left2, right2)
 
-        await merge(array, left1, right1, left2, right2)
+        await this.merge(array, left1, right1, left2, right2)
     }
 
     /**
@@ -280,6 +263,15 @@ class Sort {
 
         await this.chart(array)
         return array
+    }
+
+    reset = async (array) => {
+        array = []
+        for (let i = 1; i <= 50; i++) {
+            array.push(i * 10)
+        }
+
+        await this.chart(array)
     }
 }
 
