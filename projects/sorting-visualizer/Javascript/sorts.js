@@ -1,10 +1,10 @@
 class Sort {
     /**
      * Contains all sorting algorithms
-     * @param {Function} createChart 
+     * @param {Function} chart function to create chart for the array that being sorted.
     */
-    constructor(createChart) {
-        this.createChart = createChart
+    constructor(chart) {
+        this.chart = chart
     }
 
     get events() {
@@ -29,7 +29,7 @@ class Sort {
 
             [array[i], array[j]] = [array[j], array[i]];
 
-            await this.createChart(array)
+            await this.chart(array)
         }
 
         return array;
@@ -59,7 +59,7 @@ class Sort {
             let j = counts[d] - 1
             counts[d] -= 1
             array[j] = output[i]
-            await this.createChart(array)
+            await this.chart(array)
         }
 
         return array
@@ -98,7 +98,7 @@ class Sort {
             }
         }
 
-        await this.createChart(array)
+        await this.chart(array)
         return array
     }
 
@@ -112,7 +112,7 @@ class Sort {
                 array[j] = array[i]
                 array[i] = temp
 
-                await this.createChart(array)
+                await this.chart(array)
             }
         }
 
@@ -121,7 +121,7 @@ class Sort {
         array[i] = array[end]
         array[end] = temp
 
-        await this.createChart(array)
+        await this.chart(array)
         return i
     }
 
@@ -180,7 +180,7 @@ class Sort {
             j++
         }
 
-        await this.createChart(results)
+        await this.chart(results)
         return results
     }
 
@@ -214,14 +214,14 @@ class Sort {
                 array[j + 1] = array[j]
                 j--
 
-                await this.createChart(array)
+                await this.chart(array)
             }
 
-            await this.createChart(array)
+            await this.chart(array)
             array[j + 1] = temp
         }
 
-        await this.createChart(array)
+        await this.chart(array)
         return array
     }
 
@@ -237,12 +237,12 @@ class Sort {
                     let temp = array[j]
                     array[j] = array[j + 1]
                     array[j + 1] = temp
-                    await this.createChart(array)
+                    await this.chart(array)
                 }
             }
         }
 
-        await this.createChart(array)
+        await this.chart(array)
         return array
     }
 
@@ -263,10 +263,10 @@ class Sort {
             let temp = array[min]
             array[min] = array[i]
             array[i] = temp
-            await this.createChart(array)
+            await this.chart(array)
         }
 
-        await this.createChart(array)
+        await this.chart(array)
         return array
     }
 }
