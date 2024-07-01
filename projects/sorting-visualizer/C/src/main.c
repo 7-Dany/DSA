@@ -224,6 +224,7 @@ int main(void)
 
         BeginDrawing();
         {
+            // Drawing the array
             for (int i = 0; i < array_size; i++) {
                 float hue = (array[i] / (array_size * 10.f)) * 360;
                 Color color = ColorFromHSV(hue, 1, 1);
@@ -233,6 +234,7 @@ int main(void)
                 DrawRectangleV(pos, size, color);
             } 
 
+            // Displaying the selected algorithm
             DrawText("algorithm:", frame_width + 5, 30, 20, WHITE);
             DrawText(get_sort_name(current_alg), frame_width + 5, 60, 20, YELLOW);
 
@@ -243,6 +245,7 @@ int main(void)
                 Vector2 endpos; 
                 Vector2 startpos;
                 const float inc_angle = 360.f / SORT_COUNT;
+                // Drawing the lines seperating the sectors
                 for (int i = 0; i < SORT_COUNT; i++) {
                     float angle = (i * inc_angle) * DEG2RAD; 
                     startpos.x = (cosf(angle) * radius1) + center.x;
@@ -252,7 +255,7 @@ int main(void)
                     DrawLineEx(startpos, endpos, 2.f, WHITE);
                 }
 
-
+                // Drawing the names of the algorithms
                 float start_angle = inc_angle / -2.f;
                 for (int i = 0; i < SORT_COUNT; i++) {
                     float angle = (start_angle - (i * inc_angle)) * DEG2RAD;
