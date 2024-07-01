@@ -110,8 +110,6 @@ void* sort(void *sort_args)
 
 #define in_range(i, l, h) ((i) >= (l) && (i) <= (h) ? true : false)
 
-Sorting_Algs current_alg = SHUFFLE;
-
 uint32_t get_delay(Sorting_Algs alg)
 {
     switch (alg) {
@@ -170,6 +168,7 @@ int main(void)
     const int radius1 = 120;
     const int radius2 = 250;
     int sector = -1;
+    Sorting_Algs current_alg = SHUFFLE;
 
     bool show_wheel = false;
     bool ignore_tab = false;
