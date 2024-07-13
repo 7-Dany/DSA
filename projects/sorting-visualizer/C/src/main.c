@@ -110,8 +110,6 @@ void* sort(void *sort_args)
 
 #define in_range(i, l, h) ((i) >= (l) && (i) <= (h) ? true : false)
 
-Sorting_Algs current_alg = SHUFFLE;
-
 uint32_t get_delay(Sorting_Algs alg)
 {
     switch (alg) {
@@ -130,17 +128,16 @@ uint32_t get_delay(Sorting_Algs alg)
 #define screenWidth 1600
 #define screenHeight 900
 
-int get_sector()
+int get_sector(Vector2 center, int radius1, int radius2)
 {
     const float inc_angle = 360.f / SORT_COUNT;
-    const Vector2 center = {.x = screenWidth / 2.f, .y = screenHeight / 2.f};
     Vector2 mousepos = GetMousePosition();
     float angle = Vector2LineAngle(center, mousepos) * RAD2DEG;
     if (angle < 0) angle += 360.f;
     float distance = Vector2Distance(center, mousepos);
     int sector = -1;
     
-    if (in_range(distance, 150, 250)) {
+    if (in_range(distance, radius1, radius2)) {
         for (int i = 0; i < SORT_COUNT; i++) {
             if (in_range(angle, (inc_angle * i) + 1, (inc_angle * (i + 1)) - 1)) {
                 sector = i;
@@ -167,7 +164,11 @@ int main(void)
     const int frame_height = frame_end.y - frame_start.y;
     const int bar_width = frame_width / array_size;
     const float factor = (frame_height - 50.f) / (array_size * 10);
+    const Vector2 center = {.x = screenWidth / 2.f, .y = screenHeight / 2.f};
+    const int radius1 = 120;
+    const int radius2 = 250;
     int sector = -1;
+    Sorting_Algs current_alg = SHUFFLE;
 
     bool show_wheel = false;
     bool ignore_tab = false;
@@ -179,6 +180,7 @@ int main(void)
     }
 
     InitWindow(screenWidth, screenHeight, "Sorting Visualizer");
+    SetConfigFlags(FLAG_MSAA_4X_HINT); 
 
     Sort_Args args = {
         .arr = array,
@@ -208,7 +210,7 @@ int main(void)
         }
 
         if (show_wheel) {
-            sector = get_sector();
+            sector = get_sector(center, radius1, radius2);
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && sector != -1) {
                 current_alg = sector;
@@ -221,6 +223,7 @@ int main(void)
 
         BeginDrawing();
         {
+            // Drawing the array
             for (int i = 0; i < array_size; i++) {
                 float hue = (array[i] / (array_size * 10.f)) * 360;
                 Color color = ColorFromHSV(hue, 1, 1);
@@ -230,32 +233,34 @@ int main(void)
                 DrawRectangleV(pos, size, color);
             } 
 
+            // Displaying the selected algorithm
             DrawText("algorithm:", frame_width + 5, 30, 20, WHITE);
             DrawText(get_sort_name(current_alg), frame_width + 5, 60, 20, YELLOW);
 
             if (show_wheel) {
                 DrawRectangle(0, 0, screenWidth, screenHeight, ColorAlpha(BLACK, 0.4f));
-                Vector2 center = {.x = screenWidth / 2.f, .y = screenHeight / 2.f};
-                DrawCircleLinesV(center, 250, WHITE);
-                DrawCircleLinesV(center, 150, WHITE);
+                DrawCircleLinesV(center, radius1, WHITE);
+                DrawCircleLinesV(center, radius2, WHITE);
                 Vector2 endpos; 
                 Vector2 startpos;
                 const float inc_angle = 360.f / SORT_COUNT;
+                // Drawing the lines seperating the sectors
                 for (int i = 0; i < SORT_COUNT; i++) {
                     float angle = (i * inc_angle) * DEG2RAD; 
-                    startpos.x = (cosf(angle) * 150) + center.x;
-                    startpos.y = (sinf(angle) * 150) + center.y;
-                    endpos.x = (cosf(angle) * 100) + startpos.x;
-                    endpos.y = (sinf(angle) * 100) + startpos.y;
+                    startpos.x = (cosf(angle) * radius1) + center.x;
+                    startpos.y = (sinf(angle) * radius1) + center.y;
+                    endpos.x = (cosf(angle) * (radius2 - radius1)) + startpos.x;
+                    endpos.y = (sinf(angle) * (radius2 - radius1)) + startpos.y;
                     DrawLineEx(startpos, endpos, 2.f, WHITE);
                 }
 
-
+                // Drawing the names of the algorithms
                 float start_angle = inc_angle / -2.f;
                 for (int i = 0; i < SORT_COUNT; i++) {
                     float angle = (start_angle - (i * inc_angle)) * DEG2RAD;
-                    startpos.x = (cosf(angle) * 200) + center.x;
-                    startpos.y = (sinf(angle) * 200) + center.y;
+                    float mid_radius = (radius1 + radius2) / 2.f;
+                    startpos.x = (cosf(angle) * mid_radius) + center.x;
+                    startpos.y = (sinf(angle) * mid_radius) + center.y;
                     Font font = GetFontDefault();
                     float space = 2.f;
                     float font_size = sector == i ? 25 : 20;
