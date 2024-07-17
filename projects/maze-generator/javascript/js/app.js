@@ -7,6 +7,7 @@ const gridWidth = document.querySelector('#grid-width')
 const gridHeight = document.querySelector('#grid-height')
 const cellWidth = document.querySelector('#cell-width')
 const cellHeight = document.querySelector('#cell-height')
+const generate = document.querySelector('#generate')
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -23,7 +24,11 @@ form.addEventListener('submit', async (event) => {
     }
 
     try {
+        generate.disabled = true
+        generate.textContent = "Generating"
         await maze.startGenerating(width, height, cellW, cellH);
+        generate.textContent = "Generate Maze"
+        generate.disabled = false
     } catch (error) {
         console.error('Error generating maze:', error);
     }
