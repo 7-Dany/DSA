@@ -8,6 +8,13 @@ class Canvas {
         this.context.strokeStyle = '#fff';
     }
 
+    setDimentions(width, height){
+        this.canvas.width = width
+        this.canvas.height = height
+        this.context.fillStyle = '#0ff';
+        this.context.strokeStyle = '#fff';
+    }
+
     /**
      * Draws a line on the canvas.
      * @param {Array} start - The starting point [x, y].
