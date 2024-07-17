@@ -3,29 +3,28 @@ import Canvas from './Canvas.js'
 import Cell from './Cell.js';
 
 class Maze {
-    constructor(width = 500, height = 500, cellWidth = 100, cellHeight = 100) {
-        this.canvas = new Canvas('canvas', width, height);
+    constructor(width, height) {
         this.width = width;
         this.height = height;
-        this.cellWidth = cellWidth;
-        this.cellHeight = cellHeight;
+        this.cellWidth = this.width / 5
+        this.cellHeight = this.height / 5
         this.cells = [];
+        this.canvas = new Canvas('canvas', this.width, this.height);
         this.cellRenderer = new Renderer(this.canvas);
+        this.createCells()
+        this.reloadCells()
     }
 
-    startGenerating = async (width, height, cellWidth, cellHeight) => {
+    startGenerating = async (cellWidth, cellHeight) => {
         this.cells = [];
-        this.width = width;
-        this.height = height;
-        this.cellWidth = cellWidth;
-        this.cellHeight = cellHeight;
-        this.canvas.setDimentions(width, height);
+        if(cellWidth) this.cellWidth = this.width / cellWidth;
+        if(cellHeight) this.cellHeight = this.height / cellHeight;
         this.createCells();
         await this.reloadCells();
         await this.createMaze();
     }
 
-    createCells() {
+    createCells() { 
         for (let y = 0; y < this.height / this.cellHeight; y++) {
             let row = [];
             for (let x = 0; x < this.width / this.cellWidth; x++) {
