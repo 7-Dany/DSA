@@ -32,6 +32,10 @@ Here you will find different types of sorting algorithms
 - [Selection Sort](/JavaScript/Sorting/selectionSort.js)
 - [Bogo Sort](/JavaScript/Sorting/bogoSort.js)
 
+
+### Projects
+to check protjects go to this link [Projects](https://7-dany.github.io/DSA/)
+
 ### Sorting Visualizer
 
 **To Compile the C version:**
