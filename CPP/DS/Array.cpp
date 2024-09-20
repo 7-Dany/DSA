@@ -44,6 +44,7 @@ public:
         for (T element : init_list)
         {
             array[i] = element;
+            i++;
         }
     }
 
@@ -64,6 +65,11 @@ public:
             std::cout << array[i] << " ";
         }
         std::cout << std::endl;
+    }
+
+    int size()
+    {
+        return length;
     }
 
     void swap(int x, int y)
@@ -87,7 +93,7 @@ public:
         length++;
     }
 
-    T pop()
+    T *pop()
     {
         if (length == 0)
         {
@@ -95,7 +101,7 @@ public:
         }
 
         length--;
-        T element = array[length];
+        T *element = &array[length];
 
         if (length <= capacity / 4)
         {
@@ -119,9 +125,4 @@ std::ostream &operator<<(std::ostream &os, const Array<U> &arr)
 {
     arr.print();
     return os;
-}
-
-int main()
-{
-    return 0;
 }

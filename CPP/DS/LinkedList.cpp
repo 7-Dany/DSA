@@ -199,8 +199,3 @@ std::ostream &operator<<(std::ostream &os, const LinkedList<U> &list)
     list.print();
     return os;
 }
-
-int main()
-{
-    return 0;
-}
