@@ -1,13 +1,14 @@
 #include <iostream>
 
-template <typename T>
+template <typename T, typename U = T>
 class Node
 {
 public:
     T data;
+    U value;
     int height;
-    Node<T> *left;
-    Node<T> *right;
+    Node<T, U> *left;
+    Node<T, U> *right;
 
     Node(T element)
     {
@@ -16,15 +17,24 @@ public:
         left = nullptr;
         right = nullptr;
     }
+
+    Node(T key, U val)
+    {
+        data = key;
+        value = val;
+        height = 1;
+        left = nullptr;
+        right = nullptr;
+    }
 };
 
-template <typename T>
+template <typename T, typename U = T>
 class AVL
 {
 private:
-    Node<T> *root;
+    Node<T, U> *root;
 
-    void pre_order(Node<T> *root) const
+    void pre_order(Node<T, U> *root) const
     {
         if (!root)
             return;
