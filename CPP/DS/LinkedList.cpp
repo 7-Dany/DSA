@@ -1,18 +1,16 @@
 #include <iostream>
+#include <optional>
 
 template <typename T>
 class Node
 {
 public:
-    T data;
-    Node<T> *next;
-    Node<T> *prev;
+    T data_;
+    Node<T> *next_{nullptr};
+    Node<T> *prev_{nullptr};
 
-    Node(T element)
+    Node(T data) : data_(data)
     {
-        data = element;
-        next = nullptr;
-        prev = nullptr;
     }
 };
 
@@ -20,181 +18,191 @@ template <typename T>
 class LinkedList
 {
 private:
-    Node<T> *head;
-    Node<T> *tail;
-
-    void remove_helper(Node<T> *node)
+    void delete_helper()
     {
-        if (node->prev)
+        Node<T> *current = head_;
+        while (current)
         {
-            node->prev->next = node->next;
+            Node<T> *temp = current->next_;
+            delete current;
+            current = temp;
         }
-        else
-        {
-            head = node->next;
-        }
-
-        if (node->next)
-        {
-            node->next->prev = node->prev;
-        }
-        else
-        {
-            tail = node->prev;
-        }
-
-        delete node;
     }
 
 public:
+    Node<T> *head_{nullptr};
+    Node<T> *tail_{nullptr};
+
     template <typename U>
     friend std::ostream &operator<<(std::ostream &os, const LinkedList<U> &list);
 
     LinkedList()
     {
-        head = nullptr;
-        tail = nullptr;
     }
 
     LinkedList(std::initializer_list<T> init_list)
     {
-        head = nullptr;
-        tail = nullptr;
-
         for (T element : init_list)
         {
             insert(element);
         }
     }
 
-    void insert(T element)
+    LinkedList(LinkedList<T> &list)
     {
-        if (!head)
+        if (this != &list)
         {
-            head = new Node<T>(element);
-            tail = head;
-        }
-        else
-        {
-            Node<T> *temp = new Node<T>(element);
-            temp->prev = tail;
-            tail->next = temp;
-            tail = temp;
+            Node<T> *current = list.head_;
+            while (current)
+            {
+                insert(current->data_);
+                current = current->next_;
+            }
         }
     }
 
-    T *pop_head()
+    LinkedList(LinkedList<T> &&list)
     {
-        // Return nullptr if the list is empty
-        if (!head)
+        if (this != &list)
         {
-            return nullptr; 
+            head_ = list.head_;
+            tail_ = list.tail_;
+
+            list.head_ = nullptr;
+            list.tail_ = nullptr;
         }
-
-        Node<T> *node = head;
-        head = head->next;
-
-        if (head)
-        {
-            head->prev = nullptr;
-        }
-        // If the list becomes empty, update tail
-        else
-        {
-            tail = nullptr; 
-        }
-
-        // Create a copy of the data
-        T *data = new T(node->data); 
-        delete node;
-
-        // Return pointer to the data for checking
-        return data; 
     }
 
-    T *pop_tail()
+    LinkedList &operator=(LinkedList<T> &list)
     {
-        // Return nullptr if the list is empty
-        if (!tail)
+        if (this != &list)
         {
-            return nullptr; 
+            Node<T> *current = list.head_;
+            while (current)
+            {
+                insert(current->data_);
+                current = current->next_;
+            }
         }
 
-        Node<T> *temp = tail;
-        tail = tail->prev;
-
-        if (tail)
-        {
-            tail->next = nullptr;
-        }
-        // If the list becomes empty, update head
-        else
-        {
-            head = nullptr; 
-        }
-
-        // Create a copy of the data
-        T *data = new T(temp->data); 
-        delete temp;
-
-        // Return pointer to the data for checking
-        return data; 
+        return *this;
     }
 
-    void remove(T element)
+    LinkedList &operator=(LinkedList<T> &&list)
     {
-        Node<T> *current = head;
+        if (this != &list)
+        {
+            delete_helper();
+
+            head_ = list.head_;
+            tail_ = list.tail_;
+
+            list.head_ = nullptr;
+            list.tail_ = nullptr;
+        }
+
+        return *this;
+    }
+
+    void print() const
+    {
+        Node<T> *current = head_;
+
         while (current)
         {
-            if (current->data == element)
-            {
-                remove_helper(current);
-                return;
-            }
-            current = current->next;
+            std::cout << current->data_ << " ";
+            current = current->next_;
         }
+
+        std::cout << std::endl;
+    }
+
+    void insert(T element)
+    {
+        if (!head_)
+        {
+            Node<T> *node = new Node<T>(element);
+            head_ = node;
+            tail_ = node;
+            return;
+        }
+
+        Node<T> *node = new Node<T>(element);
+        node->prev_ = tail_;
+        tail_->next_ = node;
+        tail_ = tail_->next_;
+    }
+
+    std::optional<T> pop_head()
+    {
+        if (!head_)
+        {
+            return std::nullopt;
+        }
+
+        T element = head_->data_;
+        Node<T> *node = head_;
+        head_ = node->next_;
+
+        delete node;
+
+        if (!head_)
+        {
+            tail_ = nullptr;
+        }
+
+        return element;
+    }
+
+    std::optional<T> pop_tail()
+    {
+        if (!tail_)
+        {
+            return std::nullopt;
+        }
+
+        T element = tail_->data_;
+        Node<T> *node = tail_;
+        tail_ = tail_->prev_;
+
+        delete node;
+
+        if (!tail_)
+        {
+            head_ = nullptr;
+        }
+        else
+        {
+            tail_->next_ = nullptr;
+        }
+
+        return element;
     }
 
     bool search(T element)
     {
-        Node<T> *current = head;
+        Node<T> *current = head_;
         while (current)
         {
-            if (current->data == element)
+            if (current->data_ == element)
             {
                 return true;
             }
-            current = current->next;
+
+            current = current->next_;
         }
 
         return false;
     }
 
-    void print() const
-    {
-        Node<T> *current = head;
-        while (current)
-        {
-            std::cout << current->data << " ";
-            current = current->next;
-        }
-        std::cout << std::endl;
-    }
-
     ~LinkedList()
     {
-        Node<T> *current = head;
-        while (current)
-        {
-            Node<T> *temp = current->next;
-            delete current;
-            current = temp;
-        }
+        delete_helper();
     }
 };
 
-template <typename U>
-std::ostream &operator<<(std::ostream &os, const LinkedList<U> &list)
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const LinkedList<T> &list)
 {
     list.print();
     return os;

@@ -5,40 +5,40 @@ template <typename T>
 class DSet
 {
 private:
-    std::map<T, T> parent_{std::map<T, T>()};
-    std::map<T, int> rank_{std::map<T, int>()};
+    std::map<T, T> parent_;
+    std::map<T, int> rank_;
 
 public:
     template <typename U>
     friend std::ostream &operator<<(std::ostream &os, const DSet<U> &set);
 
-    DSet() = default;
+    DSet() : parent_(), rank_() {};
 
-    DSet(std::initializer_list<T> init_list)
+    DSet(std::initializer_list<T> init_list) : parent_(), rank_()
     {
-        for (T element : init_list)
+        for (const T &element : init_list)
         {
             create(element);
         }
     }
 
-    void create(T &x)
+    void create(const T &x)
     {
         parent_[x] = x;
         rank_[x] = 0;
     }
 
-    T find(T &element)
+    T find(const T &element)
     {
-        if (parent[element] != element)
+        if (parent_[element] != element)
         {
-            parent_[element] = find(element);
+            parent_[element] = find(parent_[element]);
         }
 
         return parent_[element];
     }
 
-    void unite(T &x, T &y)
+    void unite(const T &x, const T &y)
     {
         T root_x = find(x);
         T root_y = find(y);
@@ -59,7 +59,7 @@ public:
         }
     }
 
-    bool connected(T &x, T &y)
+    bool connected(const T &x, const T &y)
     {
         return find(x) == find(y);
     }
@@ -68,20 +68,27 @@ public:
     {
         std::cout << "Parent: " << std::endl;
         std::cout << "{";
+        bool first = true;
         for (const auto &[key, value] : parent_)
         {
-            std::cout << key << ": " << value << ", ";
+            if (!first)
+                std::cout << ", ";
+            std::cout << key << ": " << value;
+            first = false;
         }
-        std::cout << "\b\b}";
-        std::cout << std::endl;
+        std::cout << "}" << std::endl;
+
         std::cout << "Rank: " << std::endl;
         std::cout << "{";
+        first = true;
         for (const auto &[key, value] : rank_)
         {
-            std::cout << key << ": " << value << ", ";
+            if (!first)
+                std::cout << ", ";
+            std::cout << key << ": " << value;
+            first = false;
         }
-        std::cout << "\b\b}";
-        std::cout << std::endl;
+        std::cout << "}" << std::endl;
     }
 };
 
@@ -90,11 +97,4 @@ std::ostream &operator<<(std::ostream &os, const DSet<U> &set)
 {
     set.print();
     return os;
-}
-
-int main()
-{
-    DSet<int> set = {1, 2, 3, 4, 5};
-    std::cout << set;
-    return 0;
 }
