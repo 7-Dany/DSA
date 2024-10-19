@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>               // For assert
-#include "../../DisjointSet.cpp" // Assuming DSet is in this file
+#include "../DS/DisjointSet.cpp" // Assuming DSet is in this file
 
 void test_create_and_find()
 {

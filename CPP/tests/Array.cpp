@@ -99,10 +99,9 @@ void test_push() {
 
 void test_pop() {
     Array<int> arr = {1, 2, 3, 4, 5};
-    int* popped = arr.pop();
-    assert(*popped == 5);
+    std::optional<int> popped = arr.pop();
+    assert(popped == 5);
     assert(arr.size() == 4);
-    delete popped;
     std::cout << "Pop method test passed.\n";
 }
 
